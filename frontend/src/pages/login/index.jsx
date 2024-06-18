@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { useRef } from "react";
+import * as loginApis from "../../Api/loginApis";
 
 export default function Login() {
     let [switcher,setSwitcher] = useState(true);
+
+    let [signupValues,setSignupValues] = useState({
+        username : '',
+        email : '',
+        password : '',
+        profilePicture : ''
+    })
 
     let loginRef = useRef();
     let signupRef = useRef();
@@ -15,6 +23,8 @@ export default function Login() {
 
     let showConfirmPasswordLoginRef = useRef();
     let showConfirmPasswordBtnRef = useRef();
+
+    let cPass = useRef();
 
     const handleSwitching = (e) => {
         console.log(e.target.id)
@@ -60,6 +70,47 @@ export default function Login() {
         }
     }
 
+
+    // handling form Data 
+    const handleFormData = (e) => {
+        let {name,value,files} = e.target;
+        if(name === "profilePicture") {
+            setSignupValues({
+                ...signupValues,
+                [name] : files[0]
+            })
+        } else {
+            if(name === "confirmPassword") {
+
+                cPass.current = value;
+
+            } else {
+                setSignupValues({
+                    ...signupValues,
+                    [name] : value
+                })
+            }
+        }
+    } 
+
+    const handleSubmitData = async(e) => {
+
+        e.preventDefault();
+        
+        const formData = new FormData();
+        
+       Object.entries(signupValues).forEach(([key, value]) => {
+            if(cPass.current === signupValues.password) {
+                formData.append(key, value);
+            }
+        });
+
+        if(cPass.current === signupValues.password) {
+            let signupResponse = await loginApis.signupAccount('signup',formData);
+            console.log(signupResponse);
+        }
+    }
+
     return (
         <>
             <center>
@@ -92,23 +143,27 @@ export default function Login() {
                                         :
                                         <form className="ml-6 mr-6 mt-8 space-y-3">
                                             <h1 className="text-sm font-semibold flex">Name <span className="text-red-600">*</span></h1>
-                                            <input type="text" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Your Name" />
+                                            <input type="text" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Your Name" name="username" onChange={handleFormData}/>
+
                                             <h1 className="text-sm font-semibold flex">Email Address <span className="text-red-600">*</span></h1>
-                                            <input type="email" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="name@example.com" />
+                                            <input type="email" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="name@example.com" name="email" onChange={handleFormData}/>
+
                                             <h1 className="text-sm font-semibold flex">Password <span className="text-red-600">*</span></h1>
-                                            <input type="password" ref={showPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" />
+                                            <input type="password" ref={showPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" name="password" onChange={handleFormData}/>
+
                                             <div>
-                                                <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100" onClick={showPassword} ref={showPasswordBtnRef}>Show</button>
+                                                <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100" onClick={showPassword}  ref={showPasswordBtnRef}>Show</button>
                                             </div>
                                             <h1 className="text-sm font-semibold flex">Confirm Password <span className="text-red-600">*</span></h1>
-                                            <input type="password" ref={showConfirmPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Confirm Password" />
+                                            <input type="password" ref={showConfirmPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Confirm Password" onChange={handleFormData} name="confirmPassword"/>
                                             <div>
                                                 <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100" onClick={showConfirmPassword} ref={showConfirmPasswordBtnRef}>Show</button>
                                             </div>
                                             <h1 className="text-sm font-semibold flex">Upload Your Picture <span className="text-red-600">*</span></h1>
-                                            <input type="File" className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" />
+                                            <input type="File" className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" name="profilePicture" onChange={handleFormData}/>
+
                                             <div>
-                                                <button type="button" className="w-[26rem] text-center mt-3 mb-3 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400">Sign Up</button>
+                                                <button type="button" onClick={handleSubmitData} className="w-[26rem] text-center mt-3 mb-3 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400">Sign Up</button>
                                             </div>
                                         </form>
                                 }
