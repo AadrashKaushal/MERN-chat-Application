@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post('/signup',upload.single('profilePicture'),userAccountController.signupController);
 
+router.post('/login',userAccountController.loginController);
+
 export default router;

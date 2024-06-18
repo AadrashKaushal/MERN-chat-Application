@@ -1,23 +1,31 @@
+import { request } from "./mainRequest";
 const baseUrl = 'http://localhost';
 
-const request = async(url,option) => {
-    let response = await fetch(url,option) ;
-    response = await response.json();
-    
-    if(response.response) {
-        return response.data;
-    } else {
-        return false;
-    }
-}
 
-
-export const signupAccount = async(endpoint,body) => {
+export const signupAccount = async (endpoint, body) => {
     let url = `${baseUrl}/${endpoint}`;
     let option = {
-        method : "POST",
-        body : body
+        method: "POST",
+        url: url,
+        data: body,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     }
 
-    return request(url,option);
+    return request(option);
+}
+
+export const userAccountLogin = async (endpoint, body) => {
+    let url = `${baseUrl}/${endpoint}`;
+    let option = {
+        method: "POST",
+        url: url,
+        data: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return request(option);
 }

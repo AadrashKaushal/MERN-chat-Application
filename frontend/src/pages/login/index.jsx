@@ -12,6 +12,11 @@ export default function Login() {
         profilePicture : ''
     })
 
+    let [loginValues,setLoginValues] = useState({
+        username : '',
+        password : ''
+    })
+
     let loginRef = useRef();
     let signupRef = useRef();
 
@@ -111,6 +116,24 @@ export default function Login() {
         }
     }
 
+    const handleLoginData = (e) => {
+        let {value,name} = e.target;
+
+        setLoginValues({
+            ...loginValues,
+            [name] : value
+        })
+    }
+
+
+    const handleLogin = async(e) => {
+        e.preventDefault();
+
+        let loginResponse = await loginApis.userAccountLogin('login',loginValues);
+        console.log(loginResponse)
+    }
+    
+
     return (
         <>
             <center>
@@ -130,14 +153,14 @@ export default function Login() {
                                     switcher ?
                                         <form className="ml-6 mr-6 mt-8 space-y-3">
                                             <h1 className="text-sm font-semibold flex">Email Address <span className="text-red-600">*</span></h1>
-                                            <input type="email" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="name@example.com" />
+                                            <input type="email" className="w-[26rem]  text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="name@example.com" name="username" onChange={handleLoginData}/>
                                             <h1 className="text-sm font-semibold flex">Password <span className="text-red-600">*</span></h1>
-                                            <input type="password" ref={loginPasswordRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" />
+                                            <input type="password" ref={loginPasswordRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" name="password" onChange={handleLoginData} />
                                             <div>
                                                 <button type="button" ref={loginPasswordBtnRef} onClick={displayPassword} className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100">Show</button>
                                             </div>
                                             <div>
-                                                <button type="button" className="w-[26rem] text-center mt-6 mb-4 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400">Login</button>
+                                                <button type="button" className="w-[26rem] text-center mt-6 mb-4 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400" onClick={handleLogin}>Login</button>
                                             </div>
                                         </form> 
                                         :
