@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import userAccountRouter from './routes/userAccountRoutes.js';
+import { conect } from './databaseConnection.js';
 
 import 'dotenv/config'
 

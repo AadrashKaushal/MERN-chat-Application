@@ -1,13 +1,35 @@
+import { signupModel } from "../Models/signupModel.js";
+import bcrypt from 'bcrypt';
+import { generateToken } from "../helper/generateToken.js";
+
 export  const signupController = (req,res) => {
     try {
-        let {username,email,password} = req.body;
-        let profilePicture = req.file;
 
-        console.log(profilePicture)
+        let {username,email,password} = req.body;
+        let profilePicture = req.file.path;
+
+        // encrypt the password
+
+        let saltRounds = 10;
+        bcrypt.genSalt(saltRounds, function(err, salt) {
+
+            if(err) console.log(err);
+            bcrypt.hash(password, salt, async function(err, hash) {
+
+                if(err) console.log(err);
+                let userData = new signupModel({fullname : username , email : email , password : hash , profilePicture : profilePicture})
+                await userData.save();
+
+            });
+        });
+
+
+        let token = generateToken({email : email,username : username});
+        console.log(token);
         
         res.json({
             response : true,
-            message : "get All user Data"
+            message : "Account created successfully"
         })
 
     } catch(err) {
@@ -16,6 +38,8 @@ export  const signupController = (req,res) => {
         res.json({
             response : false,
             message : "Something went wrong !!"
+
+
         })
     }
 }

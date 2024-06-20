@@ -3,7 +3,6 @@ import path from 'path';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log(file)
       cb(null, 'profilePictures/');
     },
     filename: function (req, file, cb) {
