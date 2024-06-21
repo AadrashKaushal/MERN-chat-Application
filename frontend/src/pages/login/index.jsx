@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRef } from "react";
 import * as loginApis from "../../Api/loginApis";
-
+import { useNavigate } from "react-router-dom";
 export default function Login() {
     let [switcher,setSwitcher] = useState(true);
 
@@ -86,9 +86,7 @@ export default function Login() {
             })
         } else {
             if(name === "confirmPassword") {
-
                 cPass.current = value;
-
             } else {
                 setSignupValues({
                     ...signupValues,
@@ -97,7 +95,7 @@ export default function Login() {
             }
         }
     } 
-
+    let navigate = useNavigate();
     const handleSubmitData = async(e) => {
 
         e.preventDefault();
@@ -111,8 +109,11 @@ export default function Login() {
         });
 
         if(cPass.current === signupValues.password) {
+            
             let signupResponse = await loginApis.signupAccount('signup',formData);
-            console.log(signupResponse);
+            if(signupResponse.response) {
+                navigate(`/user/${signupValues.email}`)
+            } 
         }
     }
 
