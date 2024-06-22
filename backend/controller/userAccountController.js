@@ -23,10 +23,8 @@ export  const signupController = (req,res) => {
             });
         });
 
-
         let token = generateToken({email : email,username : username});
-        console.log(token);
-        
+    
         res.json({
             response : true,
             message : "Account created successfully"

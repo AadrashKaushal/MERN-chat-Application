@@ -146,8 +146,8 @@ export default function Login() {
                 <div className="w-[30rem] bg-white rounded-lg pt-8">
                     <div>
                         <div className=" flex space-x-12 ml-6 mr-6">
-                            <h1 className="text-base w-48 p-1 rounded-2xl bg-blue-200 cursor-pointer" id="login" onClick={handleSwitching} ref={loginRef}>Login</h1>
-                            <h1 className="text-base w-48 p-1 rounded-2xl cursor-pointer" id="signup" onClick={handleSwitching} ref={signupRef}>Sign Up</h1>
+                            <h1 className="text-base text-center w-48 p-1 rounded-2xl bg-blue-200 cursor-pointer" id="login" onClick={handleSwitching} ref={loginRef}>Login</h1>
+                            <h1 className="text-base text-center w-48 p-1 rounded-2xl cursor-pointer" id="signup" onClick={handleSwitching} ref={signupRef}>Sign Up</h1>
                         </div>
                         <div className="flex">
 
@@ -159,7 +159,7 @@ export default function Login() {
                                         <h1 className="text-sm font-semibold flex">Password <span className="text-red-600">*</span></h1>
                                         <input type="password" ref={loginPasswordRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" name="password" onChange={handleLoginData} />
                                         <div>
-                                            <button type="button" ref={loginPasswordBtnRef} onClick={displayPassword} className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100">Show</button>
+                                            <button type="button" ref={loginPasswordBtnRef} onClick={displayPassword} className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[22.5rem] p-1 rounded-md bg-gray-100">Show</button>
                                         </div>
                                         <div>
                                             <button type="button" className="w-[26rem] text-center mt-6 mb-4 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400" onClick={handleLogin}>Login</button>
@@ -177,12 +177,12 @@ export default function Login() {
                                         <input type="password" ref={showPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Enter Password" name="password" onChange={handleFormData} />
 
                                         <div>
-                                            <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100" onClick={showPassword} ref={showPasswordBtnRef}>Show</button>
+                                            <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[22.5rem] p-1 rounded-md bg-gray-100" onClick={showPassword} ref={showPasswordBtnRef}>Show</button>
                                         </div>
                                         <h1 className="text-sm font-semibold flex">Confirm Password <span className="text-red-600">*</span></h1>
                                         <input type="password" ref={showConfirmPasswordLoginRef} className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" placeholder="Confirm Password" onChange={handleFormData} name="confirmPassword" />
                                         <div>
-                                            <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[9.5rem] p-1 rounded-md bg-gray-100" onClick={showConfirmPassword} ref={showConfirmPasswordBtnRef}>Show</button>
+                                            <button type="button" className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[22.5rem] p-1 rounded-md bg-gray-100" onClick={showConfirmPassword} ref={showConfirmPasswordBtnRef}>Show</button>
                                         </div>
                                         <h1 className="text-sm font-semibold flex">Upload Your Picture <span className="text-red-600">*</span></h1>
                                         <input type="File" className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" name="profilePicture" onChange={handleFormData} />
