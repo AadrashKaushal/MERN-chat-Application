@@ -10,7 +10,7 @@ export default function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/user/:userEmail" element={<Home />} />
+          <Route path="/chats" element={<Home />} />
         </Routes>
       </div>
     </>

@@ -112,7 +112,7 @@ export default function Login() {
 
             let signupResponse = await loginApis.signupAccount('signup', formData);
             if (signupResponse.response) {
-                navigate(`/user/${signupValues.email}`)
+                navigate(`/chats`)
             }
         }
     }
