@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import * as loginApis from "../../Api/loginApis";
 import { useNavigate } from "react-router-dom";
+import { useToast } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react'
+
 export default function Login() {
+    const toast = useToast();
+    let [loader,setLoader] = useState(false);
+
     let [switcher, setSwitcher] = useState(true);
 
     let [signupValues, setSignupValues] = useState({
@@ -97,7 +103,7 @@ export default function Login() {
     }
     let navigate = useNavigate();
     const handleSubmitData = async (e) => {
-
+        setLoader(true);
         e.preventDefault();
 
         const formData = new FormData();
@@ -112,7 +118,21 @@ export default function Login() {
 
             let signupResponse = await loginApis.signupAccount('signup', formData);
             if (signupResponse.response) {
-                navigate(`/chats`)
+                let token = signupResponse.token;
+                localStorage.setItem("token",token);
+                setTimeout(()=>{
+                    setLoader(false)
+                    navigate(`/chats`);
+                },3000);
+            } else {
+                toast({
+                    title: 'Email Exists',
+                    description: signupResponse.message,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                  })
+                  setLoader(false);
             }
         }
     }
@@ -188,7 +208,7 @@ export default function Login() {
                                         <input type="File" className="w-[26rem] text-sm h-10 pb-1 rounded-md pl-3 border focus:outline-none" name="profilePicture" onChange={handleFormData} />
 
                                         <div>
-                                            <button type="button" onClick={handleSubmitData} className="w-[26rem] text-center mt-3 mb-3 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400">Sign Up</button>
+                                            <button type="button" onClick={handleSubmitData} className="w-[26rem] text-center mt-3 mb-3 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400">{loader ? <Spinner color='white' /> : "Sign up"}</button>
                                         </div>
                                     </form>
                             }

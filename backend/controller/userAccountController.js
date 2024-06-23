@@ -7,7 +7,8 @@ export  const signupController = (req,res) => {
 
         let {username,email,password} = req.body;
         let profilePicture = req.file.path;
-
+        
+        console.log(email)
         // encrypt the password
 
         let saltRounds = 10;
@@ -27,17 +28,16 @@ export  const signupController = (req,res) => {
     
         res.json({
             response : true,
+            token : token,
             message : "Account created successfully"
         })
 
     } catch(err) {
         console.log(err);
-
+        
         res.json({
             response : false,
             message : "Something went wrong !!"
-
-
         })
     }
 }
