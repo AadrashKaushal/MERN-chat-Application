@@ -8,6 +8,7 @@ import { Spinner } from '@chakra-ui/react'
 export default function Login() {
     const toast = useToast();
     let [loader,setLoader] = useState(false);
+    let [loginLoader,setLoginLoader] = useState(false);
 
     let [switcher, setSwitcher] = useState(true);
 
@@ -122,11 +123,11 @@ export default function Login() {
                 localStorage.setItem("token",token);
                 setTimeout(()=>{
                     setLoader(false)
-                    navigate(`/chats`);
+                    navigate('/chats');
                 },3000);
             } else {
                 toast({
-                    title: 'Email Exists',
+                    title: 'Error',
                     description: signupResponse.message,
                     status: 'error',
                     duration: 2000,
@@ -148,10 +149,28 @@ export default function Login() {
 
 
     const handleLogin = async (e) => {
+        setLoginLoader(true);
         e.preventDefault();
 
         let loginResponse = await loginApis.userAccountLogin('login', loginValues);
-        console.log(loginResponse)
+
+        if(loginResponse.response) {
+            let token = loginResponse.token;
+            localStorage.setItem("token",token);
+            setTimeout(()=>{
+                setLoginLoader(false)
+                navigate('/chats');
+            },3000);
+        } else {
+            toast({
+                title: 'Error',
+                description: loginResponse.message,
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+              })
+              setLoginLoader(false);
+        }
 
     }
 
@@ -182,7 +201,7 @@ export default function Login() {
                                             <button type="button" ref={loginPasswordBtnRef} onClick={displayPassword} className="text-center absolute text-xs w-12 h-6 font-semibold mt-[-2.8rem] ml-[22.5rem] p-1 rounded-md bg-gray-100">Show</button>
                                         </div>
                                         <div>
-                                            <button type="button" className="w-[26rem] text-center mt-6 mb-4 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400" onClick={handleLogin}>Login</button>
+                                            <button type="button" className="w-[26rem] text-center mt-6 mb-4 text-white h-10 rounded-md hover:bg-blue-500 bg-blue-400" onClick={handleLogin}>{loginLoader ? <Spinner color='white' /> :"Login"}</button>
                                         </div>
                                     </form>
                                     :

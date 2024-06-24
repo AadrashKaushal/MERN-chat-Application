@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import userAccountRouter from './routes/userAccountRoutes.js';
+import chatRouter from './routes/chatRoutes.js';
 import { conect } from './databaseConnection.js';
 
 import 'dotenv/config'
@@ -22,6 +23,7 @@ App.use(bodyParser.urlencoded({ extended: false}))
 
 // adding routes
 App.use(userAccountRouter);
+App.use(chatRouter);
 
 App.listen(port,()=>{
     console.log(`Server Started at port ${port}`);

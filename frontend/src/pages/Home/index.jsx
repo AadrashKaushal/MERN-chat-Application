@@ -1,11 +1,21 @@
 import { useParams } from "react-router-dom"
 import { Grid, GridItem } from '@chakra-ui/react'
-import React from 'react';
+import React, { useEffect } from 'react';
 import MyChats from "../../components/MyChats.jsx"
 import Navbar from "../../components/Navbar.jsx";
+import * as chatPageApis from '../../Api/chatPageApis.js'
 
 export default function Home() {
-  const params = useParams();
+  
+    useEffect(()=>{
+      let token = localStorage.getItem('token');
+      chatPageApis.userProfileData('userProfile',token).then((res) => {
+          console.log("user Profile",res);
+      }).catch((err) => {
+        console.log(err);
+      })
+    },[]);
+  
 
   return (
     <>
