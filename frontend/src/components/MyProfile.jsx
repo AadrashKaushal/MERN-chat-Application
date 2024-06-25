@@ -16,8 +16,10 @@ import { useDisclosure } from '@chakra-ui/react'
 import LogoutAccount from './LogoutAccount'
 
 export default function MyProfile() {
+    
     let viewProfile = useDisclosure();
     let logoutAccount = useDisclosure();
+
     return (
         <>
             <Popover>

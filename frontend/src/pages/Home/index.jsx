@@ -1,22 +1,39 @@
-import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Grid, GridItem } from '@chakra-ui/react'
 import React, { useEffect } from 'react';
 import MyChats from "../../components/MyChats.jsx"
 import Navbar from "../../components/Navbar.jsx";
 import * as chatPageApis from '../../Api/chatPageApis.js'
+import {useUserProfile} from '../../context/ChatContext.jsx';
+import { useToast } from '@chakra-ui/react'
 
 export default function Home() {
-  
+    const toast = useToast();
+    let {setUserProfile} = useUserProfile();
+    let navigate = useNavigate();
+
     useEffect(()=>{
       let token = localStorage.getItem('token');
       chatPageApis.userProfileData('userProfile',token).then((res) => {
-          console.log("user Profile",res);
+        if(res.response) {
+          setUserProfile(res.data);
+          console.log(res.data);
+          toast({
+            title: 'Success',
+            description: "Login Successfully",
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+          })
+        } else {
+          navigate('/')
+        }
+
       }).catch((err) => {
         console.log(err);
       })
     },[]);
   
-
   return (
     <>
       <Grid
