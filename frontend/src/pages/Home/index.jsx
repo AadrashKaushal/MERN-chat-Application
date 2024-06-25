@@ -15,16 +15,20 @@ export default function Home() {
     useEffect(()=>{
       let token = localStorage.getItem('token');
       chatPageApis.userProfileData('userProfile',token).then((res) => {
+
         if(res.response) {
+
           setUserProfile(res.data);
           console.log(res.data);
+
           toast({
             title: 'Success',
             description: "Login Successfully",
             status: 'success',
-            duration: 4000,
+            duration: 3000,
             isClosable: true,
           })
+
         } else {
           navigate('/')
         }

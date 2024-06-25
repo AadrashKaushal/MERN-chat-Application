@@ -9,6 +9,7 @@ import {
   Input,
   useDisclosure
 } from '@chakra-ui/react';
+import SearchUsers from './SearchUsers';
 
 export default function MyDrawer({isOpen , onClose}) {
     return (
@@ -23,6 +24,11 @@ export default function MyDrawer({isOpen , onClose}) {
                 <DrawerHeader>Search User</DrawerHeader>
                 <DrawerBody>
                   <Input placeholder='Search by name or email' />
+                  <div className='mt-4 space-y-3'>
+                      <SearchUsers/>
+                      <SearchUsers/>
+                      <SearchUsers/>
+                  </div>
                 </DrawerBody>
               </DrawerContent>
             </Drawer>
