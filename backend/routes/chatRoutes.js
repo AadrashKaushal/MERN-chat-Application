@@ -5,4 +5,8 @@ const router = express.Router();
 
 router.get('/userProfile',jwtVerification,chatsController.getUserProfileController);
 
+router.get('/searchUsers',jwtVerification,chatsController.searchUserController);
+
+router.post('/chats',jwtVerification,chatsController.userChatsController);
+
 export default router;

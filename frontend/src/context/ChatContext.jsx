@@ -9,8 +9,10 @@ export const useUserProfile = () => {
 
 export const ChatProvider = ({children}) => {
     let [userProfile,setUserProfile] = useState({});
+    let [searchUser,setSearchUser] = useState([]);
+
     return (
-        <chatContext.Provider value={{userProfile , setUserProfile}}>
+        <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser}}>
         {children}
         </chatContext.Provider>
     );
