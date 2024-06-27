@@ -3,10 +3,12 @@ import { AddIcon } from "@chakra-ui/icons"
 import GroupChats from './GroupChats';
 import { useDisclosure } from '@chakra-ui/react'
 import ChatUsers from './ChatUsers.jsx';
-
+import { useEffect } from 'react';
+import { useUserProfile } from '../context/ChatContext.jsx';
 
 export default function MyChats() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();  
+
     return (
         <>
             <div>
@@ -18,9 +20,7 @@ export default function MyChats() {
                     <GroupChats isOpen={isOpen} onClose={onClose} />
                 </div>
                 <div className='w-[28rem] h-[75vh] mt-4 rounded-md ml-2 mr-2 bg-gray-100'>
-                    <div className=' space-y-4 pt-4'>
-                        <ChatUsers />
-                    </div>
+                    <ChatUsers />
                 </div>
             </div>
         </>

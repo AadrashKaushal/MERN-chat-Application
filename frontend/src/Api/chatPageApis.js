@@ -42,3 +42,16 @@ export const saveUserChats = async (endpoint, body,token) => {
 
     return request(option);
 }
+
+export const myChats = async (endpoint, token,queryParameter) => {
+    let url = `${baseUrl}/${endpoint}?objectId=${queryParameter}`;
+    let option = {
+        method: "GET",
+        url: url,
+        headers: {
+            Authorization : `Bearer ${token}`
+        }
+    }
+
+    return  request(option);
+}

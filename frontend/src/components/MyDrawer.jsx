@@ -7,21 +7,22 @@ import {
   DrawerHeader,
   DrawerBody,
   Input,
-  useDisclosure
+  useDisclosure,useToast
 } from '@chakra-ui/react';
 import SearchUsers from './SearchUsers';
 import { useUserProfile } from '../context/ChatContext';
 import { searchingUser } from '../Api/chatPageApis';
+import { saveUserChats } from '../Api/chatPageApis';
 
 export default function MyDrawer({ isOpen, onClose }) {
-
+  let toast = useToast();
   let [searchValue,setSearchValue] = useState("");
-  let [boolean,setBoolean] = useState(false);
-  let {setSearchUser , userProfile} = useUserProfile();
+  let [changer,setChanger] = useState(false);
+  let {setSearchUser , userProfile ,boolean, setBoolean} = useUserProfile();
   const  getSearchValue = (e) => {
     e.preventDefault()
     setSearchValue(e.target.value);
-    setBoolean(!boolean);
+    setChanger(!changer);
   }
 
 
@@ -38,20 +39,32 @@ export default function MyDrawer({ isOpen, onClose }) {
       setSearchUser([...[]]);
     }
 
-  },[boolean]);
+  },[changer]);
 
   const handleChats = async(val) => {
     let users = {
         user : []
     }
     users.user.push(val._id);
-    users.user.push(userProfile._id);
+    users.user.push(userProfile._id); 
 
     let token = localStorage.getItem("token");
 
-    let response = await saveUserChats('chats',users,token);
-    if(response.response) {
-          onClose;
+    let info = await saveUserChats('chats',users,token);
+
+    if(info.response) {
+      onClose();
+      setBoolean(!boolean);
+    } else {
+      onClose();
+      toast({
+        title: 'Error',
+        position : 'top-center',
+        description: info.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
 }
 

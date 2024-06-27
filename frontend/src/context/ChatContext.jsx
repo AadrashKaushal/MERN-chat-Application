@@ -10,9 +10,13 @@ export const useUserProfile = () => {
 export const ChatProvider = ({children}) => {
     let [userProfile,setUserProfile] = useState({});
     let [searchUser,setSearchUser] = useState([]);
+    let [myChats,setMyChats] = useState([]);
+    let [boolean,setBoolean] = useState(false);
 
+    let [liveChatting,setLiveChatting] = useState([]);
     return (
-        <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser}}>
+        <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser , myChats , setMyChats , setBoolean ,boolean ,setLiveChatting,
+        liveChatting}}>
         {children}
         </chatContext.Provider>
     );

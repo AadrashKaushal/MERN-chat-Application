@@ -1,26 +1,10 @@
 import { Avatar } from '@chakra-ui/react'
 import { useUserProfile } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
-import { saveUserChats } from '../Api/chatPageApis';
 
-export default function SearchUsers() {
-    let { searchUser , userProfile} = useUserProfile();
-    const handleChats = async(val) => {
-        let users = {
-            user : []
-        }
-        users.user.push(val._id);
-        users.user.push(userProfile._id);
-
-        let token = localStorage.getItem("token");
-
-        let response = await saveUserChats('chats',users,token);
-        if(response.response) {
-            
-        }
-    }
-
-
+export default function SearchUsers({handleChats}) {
+    let { searchUser } = useUserProfile();
+    
     return (
         <>
             <div className='mt-4 space-y-3'>

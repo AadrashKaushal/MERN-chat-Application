@@ -180,7 +180,7 @@ export default function Login() {
 
             <div className=" space-y-6 mt-8 mx-auto">
                 <div className=" w-[30rem] h-20 bg-white rounded-lg p-4">
-                    <h1 className="text-3xl font-normal text-gray-600">Talk-A-Tive</h1>
+                    <h1 className="text-3xl text-center font-normal text-gray-600">Talk-A-Tive</h1>
                 </div>
                 <div className="w-[30rem] bg-white rounded-lg pt-8">
                     <div>
