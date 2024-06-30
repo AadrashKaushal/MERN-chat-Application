@@ -1,14 +1,25 @@
-import { IconButton, Button, Input } from '@chakra-ui/react'
+import { IconButton, Button, Input ,useDisclosure} from '@chakra-ui/react'
 import { ViewIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { useUserProfile } from '../context/ChatContext';
+import ChatProfile from './ChatProfile';
 
 export default function RealTimeChat() {
+    let {onOpen , isOpen ,onClose} = useDisclosure();
+    
+    let {liveChatting , setLiveChatting} = useUserProfile();
+
+    const handleChatSelection = () => {
+        liveChatting.splice(0,liveChatting.length);
+        setLiveChatting([...liveChatting]);
+    }
     return (
         <>
             <div className=''>
                 <div className='flex justify-between ml-3 mr-4 mt-3 sticky'>
-                    <IconButton icon={<ArrowBackIcon />} />
-                    <p className='text-3xl font-thin text-black'>Aadrash Kaushal</p>
-                    <IconButton icon={<ViewIcon />} />
+                    <IconButton icon={<ArrowBackIcon />} onClick={handleChatSelection}/>
+                    <p className='text-3xl font-thin text-black'>{liveChatting[0].fullname}</p>
+                    <IconButton icon={<ViewIcon />} onClick={onOpen}/>
+                    <ChatProfile isOpen={isOpen} onClose={onClose}/>
                 </div>
                 <div className=' h-[35rem] w-[60rem] ml-2 mt-4 rounded-md mr-3 bg-gray-100 '>
                     

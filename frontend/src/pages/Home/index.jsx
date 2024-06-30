@@ -4,53 +4,54 @@ import React, { useEffect } from 'react';
 import MyChats from "../../components/MyChats.jsx"
 import Navbar from "../../components/Navbar.jsx";
 import * as chatPageApis from '../../Api/chatPageApis.js'
-import {useUserProfile} from '../../context/ChatContext.jsx';
+import { useUserProfile } from '../../context/ChatContext.jsx';
 import { useToast } from '@chakra-ui/react'
 import RealTimeChat from "../../components/RealTimeChat.jsx";
 
 export default function Home() {
-    const toast = useToast();
-    let {setUserProfile , setMyChats,userProfile , boolean} = useUserProfile();
-  
-    let navigate = useNavigate();
+  const toast = useToast();
+  let { setUserProfile, setMyChats, userProfile, boolean, liveChatting } = useUserProfile();
 
-    useEffect(()=>{
-      let token = localStorage.getItem('token');
-      chatPageApis.userProfileData('userProfile',token).then((res) => {
+  let navigate = useNavigate();
 
-        if(res.response) {
+  useEffect(() => {
+    console.log(liveChatting);
+    let token = localStorage.getItem('token');
+    chatPageApis.userProfileData('userProfile', token).then((res) => {
 
-          setUserProfile(res.data);
+      if (res.response) {
 
-          toast({
-            title: 'Success',
-            description: "Login Successfully",
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          })
+        setUserProfile(res.data);
 
-        } else {
-          navigate('/')
-        }
+        toast({
+          title: 'Success',
+          description: "Login Successfully",
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
 
+      } else {
+        navigate('/')
+      }
+
+    }).catch((err) => {
+      console.log(err);
+    })
+  }, []);
+
+  useEffect(() => {
+    if (userProfile.hasOwnProperty("fullname")) {
+      let token = localStorage.getItem("token");
+      chatPageApis.myChats('myChats', token, userProfile._id).then((res) => {
+        setMyChats([...res.data])
       }).catch((err) => {
         console.log(err);
       })
-    },[]);
+    }
+  }, [userProfile, boolean]);
 
-    useEffect(() => {
-      if (userProfile.hasOwnProperty("fullname")) {
-          let token = localStorage.getItem("token");
-          chatPageApis.myChats('myChats', token, userProfile._id).then((res) => {
-            setMyChats([...res.data])
-          }).catch((err) => {
-              console.log(err);
-          })
-      }
-  }, [userProfile,boolean]);
 
-  
   return (
     <>
       <Grid
@@ -71,8 +72,11 @@ export default function Home() {
           <MyChats />
         </GridItem>
         <GridItem pl='2' className="bg-white rounded-md ml-[23rem] mt-5 h-[88vh] mb-5 mr-5" area={'main'}>
-          {/* <h1 className="text-center mt-[41vh] text-3xl font-thin">Click on a user to start chatting </h1> */}
-          <RealTimeChat/>
+          {
+            liveChatting.length > 0 ?
+              <RealTimeChat /> :
+              <h1 className="text-center mt-[41vh] text-3xl font-thin">Click on a user to start chatting </h1>
+          }
         </GridItem>
       </Grid>
     </>

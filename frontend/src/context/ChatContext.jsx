@@ -14,6 +14,7 @@ export const ChatProvider = ({children}) => {
     let [boolean,setBoolean] = useState(false);
 
     let [liveChatting,setLiveChatting] = useState([]);
+    
     return (
         <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser , myChats , setMyChats , setBoolean ,boolean ,setLiveChatting,
         liveChatting}}>
