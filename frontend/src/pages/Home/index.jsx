@@ -15,7 +15,7 @@ export default function Home() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(liveChatting);
+    
     let token = localStorage.getItem('token');
     chatPageApis.userProfileData('userProfile', token).then((res) => {
 

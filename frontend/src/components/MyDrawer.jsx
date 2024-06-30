@@ -27,7 +27,6 @@ export default function MyDrawer({ isOpen, onClose }) {
 
 
   useEffect(()=>{
-
     if(searchValue != "") {
         let token = localStorage.getItem("token");
         searchingUser('searchUsers',token,searchValue).then((res)=> {
@@ -53,8 +52,10 @@ export default function MyDrawer({ isOpen, onClose }) {
     let info = await saveUserChats('chats',users,token);
 
     if(info.response) {
+
       onClose();
       setBoolean(!boolean);
+      setSearchUser([...[]]);
     } else {
       onClose();
       toast({
@@ -65,6 +66,7 @@ export default function MyDrawer({ isOpen, onClose }) {
         duration: 3000,
         isClosable: true,
       })
+      setSearchUser([...[]]);
     }
 }
 

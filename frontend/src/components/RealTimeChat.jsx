@@ -12,6 +12,7 @@ export default function RealTimeChat() {
         liveChatting.splice(0,liveChatting.length);
         setLiveChatting([...liveChatting]);
     }
+    
     return (
         <>
             <div className=''>
