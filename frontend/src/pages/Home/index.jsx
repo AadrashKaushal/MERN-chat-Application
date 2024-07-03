@@ -45,6 +45,7 @@ export default function Home() {
       let token = localStorage.getItem("token");
       chatPageApis.myChats('myChats', token, userProfile._id).then((res) => {
         setMyChats([...res.data])
+        console.log(res.data);
       }).catch((err) => {
         console.log(err);
       })
@@ -68,7 +69,7 @@ export default function Home() {
         <GridItem className="bg-gray-200 h-14 w-[100vw]" area={'header'}>
           <Navbar />
         </GridItem>
-        <GridItem pl='2' className="ml-5 mt-5 w-[30rem] h-[88vh] mb-5 bg-white rounded-md" area={'nav'}>
+        <GridItem pl='2' className="ml-5 mt-5 w-[30rem] h-[88vh] overflow-y-scroll overflow-x-hidden mb-5 bg-white rounded-md" area={'nav'}>
           <MyChats />
         </GridItem>
         <GridItem pl='2' className="bg-white rounded-md ml-[23rem] mt-5 h-[88vh] mb-5 mr-5" area={'main'}>

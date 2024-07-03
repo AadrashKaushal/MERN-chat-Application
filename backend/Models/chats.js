@@ -14,7 +14,8 @@ const chatsSchema = new mongoose.Schema({
         required : true
     } 
 },{
-    timestamps : true
+    timestamps : true,
+    strict : false
 })
 
 export const chats = new mongoose.model('chat',chatsSchema)

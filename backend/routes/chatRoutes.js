@@ -11,6 +11,8 @@ router.get('/searchUsers',jwtVerification,chatsController.searchUserController);
 
 router.post('/chats',jwtVerification,chatExists,chatsController.userChatsController);
 
+router.post('/groupChats',jwtVerification,chatsController.groupChatsController);
+
 router.get('/myChats',jwtVerification,chatsController.getUserChatsController);
 
 export default router;

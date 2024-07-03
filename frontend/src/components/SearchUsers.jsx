@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 export default function SearchUsers({handleChats}) {
     let { searchUser } = useUserProfile();
-    
     return (
         <>
             <div className='mt-4 space-y-3'>

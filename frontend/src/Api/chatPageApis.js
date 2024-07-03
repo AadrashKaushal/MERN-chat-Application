@@ -55,3 +55,19 @@ export const myChats = async (endpoint, token,queryParameter) => {
 
     return  request(option);
 }
+
+
+export const groupChats = async (endpoint, body,token) => {
+    let url = `${baseUrl}/${endpoint}`;
+    let option = {
+        method: "POST",
+        url: url,
+        data: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization : `Bearer ${token}`
+        }
+    }
+
+    return request(option);
+}

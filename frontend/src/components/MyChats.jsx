@@ -24,7 +24,7 @@ export default function MyChats() {
                     </Button>
                     <GroupChats isOpen={isOpen} onClose={onClose} />
                 </div>
-                <div className='w-[28rem] h-[75vh] mt-4 rounded-md ml-2 mr-2 bg-gray-100'>
+                <div className='w-[28rem] mt-4 rounded-md mr-2 '>
                     <ChatUsers />
                 </div>
             </div>

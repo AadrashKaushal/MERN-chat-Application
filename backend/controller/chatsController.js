@@ -90,16 +90,25 @@ export const getUserChatsController = async (req, res) => {
 
         let userChats = await chats.find({ users: objectId });
 
-        let myChats = [];
+
+
+        let singleChats = [];
+        let groupChats = [];
         userChats.forEach((val) => {
-            val.users.forEach((value) => {
-                if (objectId !== value) {
-                    myChats.push(value);
-                }
-            })
+            if (!val.isGroupChat) {
+                val.users.forEach((value) => {
+                    if (objectId !== value) {
+                        singleChats.push(value);
+                    }
+                })
+            }
+            else {
+                groupChats.push(val);
+            }
         })
 
-        let chatData = await signupModel.find({ _id: { $in: myChats } });
+        let chatData = await signupModel.find({ _id: { $in: singleChats } });
+        chatData = [...chatData,...groupChats];
 
         res.json({
             response: true,
@@ -113,6 +122,30 @@ export const getUserChatsController = async (req, res) => {
         res.json({
             message: "Something went wrong !!",
             response: false
+        })
+    }
+}
+
+export const groupChatsController = async (req, res) => {
+    try {
+
+        let { user, chatName, groupAdmin } = req.body;
+
+        let userChats = new chats({ isGroupChat: true, users: user, chatname: chatName });
+        userChats.set('groupAdmin', groupAdmin);
+
+        await userChats.save();
+        res.json({
+            response: true,
+            message: "Group Chat created Successfully"
+        })
+
+    } catch (err) {
+        console.log(err);
+
+        res.json({
+            response: false,
+            message: "Something went wrong !!"
         })
     }
 }
