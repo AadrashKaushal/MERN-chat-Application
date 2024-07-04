@@ -149,3 +149,52 @@ export const groupChatsController = async (req, res) => {
         })
     }
 }
+
+
+export const viewGroupChatController = async(req,res) => {
+    try {
+
+        let {users} = req.body;
+        let viewGroupChat = await signupModel.find({_id : {$in : users}});
+
+        res.json({
+            response : true,
+            message : "Get group user successfully",
+            data : viewGroupChat
+        })
+
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            response : false,
+            message : "Something went wrong !!"
+        })
+    }
+}
+
+export const deleteUserController = async(req,res) => {
+    try {
+
+        let {users , id } = req.body;
+
+        if(users.length == 0) {
+            await chats.deleteOne({_id : id});
+        } else {
+            await chats.updateOne({_id : id} ,{ $set : {users : users}});
+        }
+        
+        res.json({
+            response : true,
+            message : "User deleted Successfully"
+        })
+        
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            response : false,
+            message : "Something went wrong !!"
+        })
+    }
+}

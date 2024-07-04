@@ -13,6 +13,10 @@ router.post('/chats',jwtVerification,chatExists,chatsController.userChatsControl
 
 router.post('/groupChats',jwtVerification,chatsController.groupChatsController);
 
+router.post('/viewGroupChats',jwtVerification,chatsController.viewGroupChatController);
+
+router.put('/deleteUsers',jwtVerification,chatsController.deleteUserController);
+
 router.get('/myChats',jwtVerification,chatsController.getUserChatsController);
 
 export default router;
