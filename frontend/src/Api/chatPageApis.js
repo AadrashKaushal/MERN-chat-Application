@@ -101,3 +101,18 @@ export const deleteUsers = async (endpoint, body,token) => {
 
     return request(option);
 }
+
+export const updateChatname = async (endpoint, body,token) => {
+    let url = `${baseUrl}/${endpoint}`;
+    let option = {
+        method: "PUT",
+        url: url,
+        data: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization : `Bearer ${token}`
+        }
+    }
+
+    return request(option);
+}

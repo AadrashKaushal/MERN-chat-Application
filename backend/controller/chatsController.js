@@ -198,3 +198,25 @@ export const deleteUserController = async(req,res) => {
         })
     }
 }
+
+export const updateChatnameController = async(req,res) => {
+    try {
+
+        let {id,chatname} = req.body;
+
+        await chats.updateOne({_id : id} ,{ $set : {chatname : chatname}});
+
+        res.json({
+            response : true,
+            message : "Chatname updated Successfully"
+        })
+
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            response : false,
+            message : "Something went wrong !!"
+        })
+    }
+}

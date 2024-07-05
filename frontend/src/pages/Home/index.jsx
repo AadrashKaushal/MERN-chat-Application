@@ -10,7 +10,7 @@ import RealTimeChat from "../../components/RealTimeChat.jsx";
 
 export default function Home() {
   const toast = useToast();
-  let { setUserProfile, setMyChats, userProfile, boolean, liveChatting } = useUserProfile();
+  let { setUserProfile, setMyChats, userProfile, boolean, liveChatting , renderRealTimeChat } = useUserProfile();
 
   let navigate = useNavigate();
 

@@ -17,6 +17,8 @@ router.post('/viewGroupChats',jwtVerification,chatsController.viewGroupChatContr
 
 router.put('/deleteUsers',jwtVerification,chatsController.deleteUserController);
 
+router.put('/updateChatname',jwtVerification,chatsController.updateChatnameController);
+
 router.get('/myChats',jwtVerification,chatsController.getUserChatsController);
 
 export default router;

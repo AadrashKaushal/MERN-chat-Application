@@ -3,7 +3,7 @@ import { useUserProfile } from '../context/ChatContext';
 import { useState } from 'react';
 
 export default function ChatUsers() {
-    let { myChats, setLiveChatting, liveChatting } = useUserProfile();
+    let { myChats, setLiveChatting, liveChatting ,setRenderRealTimeChat} = useUserProfile();
 
     let [divStyle, setDivStyle] = useState({
         bgColor: "bg-gray-200",
@@ -18,6 +18,7 @@ export default function ChatUsers() {
         setLiveChatting([...liveChatting]);
         liveChatting.push(val);
         setLiveChatting([...liveChatting]);
+
     }
 
     return (

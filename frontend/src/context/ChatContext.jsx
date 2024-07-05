@@ -13,11 +13,12 @@ export const ChatProvider = ({children}) => {
     let [myChats,setMyChats] = useState([]);
     let [boolean,setBoolean] = useState(false);
 
+    let [renderRealTimeChat,setRenderRealTimeChat] = useState(false); 
     let [liveChatting,setLiveChatting] = useState([]);
     
     return (
         <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser , myChats , setMyChats , setBoolean ,boolean ,setLiveChatting,
-        liveChatting}}>
+        liveChatting , renderRealTimeChat , setRenderRealTimeChat}}>
         {children}
         </chatContext.Provider>
     );
