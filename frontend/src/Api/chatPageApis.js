@@ -116,3 +116,32 @@ export const updateChatname = async (endpoint, body,token) => {
 
     return request(option);
 }
+
+
+export const sendMessages = async (endpoint, body,token) => {
+    let url = `${baseUrl}/${endpoint}`;
+    let option = {
+        method: "POST",
+        url: url,
+        data: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization : `Bearer ${token}`
+        }
+    }
+
+    return request(option);
+}
+
+export const getAllMessage = async (endpoint, queryParameter1 , queryParameter2 ,token) => {
+    let url =  `${baseUrl}/${endpoint}?users=${queryParameter1}&chatId=${queryParameter2}`;
+    let option = {
+        method: "GET",
+        url: url,
+        headers: {
+            Authorization : `Bearer ${token}`
+        }
+    }
+
+    return request(option);
+}

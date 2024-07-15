@@ -11,6 +11,7 @@ export const ChatProvider = ({children}) => {
     let [userProfile,setUserProfile] = useState({});
     let [searchUser,setSearchUser] = useState([]);
     let [myChats,setMyChats] = useState([]);
+    let [groupChatChanger,setGroupChatChanger] = useState(false);
     let [boolean,setBoolean] = useState(false);
 
     let [renderRealTimeChat,setRenderRealTimeChat] = useState(false); 
@@ -18,7 +19,7 @@ export const ChatProvider = ({children}) => {
     
     return (
         <chatContext.Provider value={{userProfile , setUserProfile , searchUser ,setSearchUser , myChats , setMyChats , setBoolean ,boolean ,setLiveChatting,
-        liveChatting , renderRealTimeChat , setRenderRealTimeChat}}>
+        liveChatting , renderRealTimeChat , setRenderRealTimeChat , groupChatChanger , setGroupChatChanger }}>
         {children}
         </chatContext.Provider>
     );

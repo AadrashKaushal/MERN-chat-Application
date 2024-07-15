@@ -1,6 +1,6 @@
-import { json, response } from "express";
 import { signupModel } from "../Models/signupModel.js";
 import { chats } from "../Models/chats.js";
+import { messages } from "../Models/messages.js";
 
 export const getUserProfileController = async (req, res) => {
     try {
@@ -158,7 +158,7 @@ export const viewGroupChatController = async(req,res) => {
         let viewGroupChat = await signupModel.find({_id : {$in : users}});
 
         res.json({
-            response : true,
+            response : true, 
             message : "Get group user successfully",
             data : viewGroupChat
         })
@@ -177,7 +177,6 @@ export const deleteUserController = async(req,res) => {
     try {
 
         let {users , id } = req.body;
-
         if(users.length == 0) {
             await chats.deleteOne({_id : id});
         } else {
@@ -218,5 +217,78 @@ export const updateChatnameController = async(req,res) => {
             response : false,
             message : "Something went wrong !!"
         })
+    }
+}
+
+
+export const sendMessageController = async(req,res) => {
+    try {
+
+        let {readBy , sender , content , chat} = req.body;
+
+        if(chat === "soloChat"){
+            let newArr = [];
+            newArr.push(sender);
+            newArr=[...newArr,...readBy];
+
+            let chatId = await chats.find({ users : {$all : newArr} , isGroupChat : false });
+            let message = new messages({readBy : readBy , sender : sender , content : content , chat : chatId[0]._id});
+            await message.save();
+
+        } else {
+
+            let message = new messages({readBy : readBy , sender : sender , content : content , chat : chat});
+            await message.save();
+
+        }
+
+        
+
+        res.json({
+            response : true,
+            message : "Message saved successfully"
+        })
+
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            message : "Something went wrong !!",
+            response : false
+        })
+    }
+}
+
+export const getAllMessageController = async(req,res) => {
+    try {
+        
+        let {chatId , users} = req.query;
+
+        let getAllMessages;
+
+
+        if(chatId == '') {
+            let user = users.split(',');
+            let chating = await chats.find({ users : {$all : user} , isGroupChat : false });
+            console.log(chating)
+            getAllMessages = await messages.find({chat : chating[0]._id});
+
+        } else {
+            getAllMessages = await messages.find({chat : chatId});
+        }
+        
+        res.json({
+            response: true,
+            message : "All messages fetched Successfully",
+            data : getAllMessages
+        })
+
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            response: false,
+            message : "Something went wrong !!"
+        });
     }
 }

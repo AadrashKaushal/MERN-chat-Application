@@ -11,24 +11,23 @@ import { Input, Button } from '@chakra-ui/react'
 import { CloseIcon } from "@chakra-ui/icons"
 import { useUserProfile } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
-import {searchingUser, displayGroupChat, deleteUsers, updateChatname } from '../Api/chatPageApis';
+import { searchingUser, displayGroupChat, deleteUsers, updateChatname } from '../Api/chatPageApis';
 import { useToast } from '@chakra-ui/react'
 import SearchUsers from './SearchUsers';
 
 export default function ViewGroupChat({ isOpen, onClose }) {
     let toast = useToast();
-    let { setSearchUser,userProfile, liveChatting, setLiveChatting, boolean, setBoolean } = useUserProfile();
+    let { setSearchUser, userProfile, liveChatting, setLiveChatting, boolean, setBoolean , groupChatChanger} = useUserProfile();
     let [viewGroupChat, setViewGroupChat] = useState([]);
     let [addedUsers, setAddedUsers] = useState(false);
     let [changeChatName, setChangeChatName] = useState("");
     let [changer, setChanger] = useState(false);
-    let [searchValue,setSearchValue] = useState();
+    let [searchValue, setSearchValue] = useState();
+
 
     useEffect(() => {
-
-        let token = localStorage.getItem("token")
-
         if (liveChatting.length > 0) {
+            let token = localStorage.getItem("token");
             displayGroupChat('viewGroupChats', liveChatting[0], token).then((res) => {
                 setViewGroupChat([...res.data]);
             }).catch((err) => {
@@ -37,7 +36,7 @@ export default function ViewGroupChat({ isOpen, onClose }) {
         } else {
             onClose();
         }
-    }, [addedUsers])
+    }, [addedUsers , groupChatChanger])
 
 
     useEffect(() => {
@@ -56,41 +55,50 @@ export default function ViewGroupChat({ isOpen, onClose }) {
 
 
     const handleDeletedUsers = async (value) => {
-        let user = [];
+        if (userProfile._id === liveChatting[0].groupAdmin) {
+            let user = [];
 
-        liveChatting[0].users.forEach((val) => {
-            if (value._id !== val) {
-                user.push(val);
+            liveChatting[0].users.forEach((val) => {
+                if (value._id !== val) {
+                    user.push(val);
+                }
+            })
+
+            let objectId = liveChatting[0]._id;
+
+            if (user.length == 0) {
+                liveChatting.pop();
+                setLiveChatting([...liveChatting]);
+
+            } else {
+
+                liveChatting[0].users = [...user];
+                setLiveChatting([...liveChatting]);
+
             }
-        })
 
-        let objectId = liveChatting[0]._id;
+            let obj = {
+                id: objectId,
+                users: user
+            }
 
-        if (user.length == 0) {
-            liveChatting.pop();
-            setLiveChatting([...liveChatting]);
+            let token = localStorage.getItem("token");
+            let response = await deleteUsers('deleteUsers', obj, token);
 
+            if (response.response) {
+                setAddedUsers(!addedUsers);
+                if (user.length === 0) {
+                    setBoolean(!boolean);
+                }
+            }
         } else {
-
-            liveChatting[0].users = [...user];
-            setLiveChatting([...liveChatting]);
-
-        }
-
-
-        let obj = {
-            id: objectId,
-            users: user
-        }
-
-        let token = localStorage.getItem("token");
-        let response = await deleteUsers('deleteUsers', obj, token);
-
-        if (response.response) {
-            setAddedUsers(!addedUsers);
-            if (user.length === 0) {
-                setBoolean(!boolean);
-            }
+            toast({
+                title: 'Error',
+                description: "Only Admin Can remove the user",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
         }
     }
 
@@ -124,16 +132,74 @@ export default function ViewGroupChat({ isOpen, onClose }) {
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
-              })
-      
+            })
+
         }
 
     }
 
     const getValue = (e) => {
-        let {  value } = e.target;
+        let { value } = e.target;
         setSearchValue(value);
         setChanger(!changer);
+    }
+
+    const addGroupUsers = async (value) => {
+        if (userProfile._id === liveChatting[0].groupAdmin) {
+            liveChatting[0].users.push(value._id);
+            setLiveChatting([...liveChatting]);
+
+            let obj = {
+                id: liveChatting[0]._id,
+                users: liveChatting[0].users
+            }
+
+            let token = localStorage.getItem("token");
+            let response = await deleteUsers('deleteUsers', obj, token);
+
+            if (response.response) {
+                setAddedUsers(!addedUsers);
+            }
+
+        } else {
+
+            toast({
+                title: 'Error',
+                description: "Only Admin Can Add the users",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+
+        }
+    }
+
+    const handleLeavingGroup = async() => {
+        let userId = userProfile._id;
+
+        let users = [];
+        liveChatting[0].users.forEach((val) => {
+            if(userId != val){
+                users.push(val);
+            }
+        })
+
+        let obj = {
+            id : liveChatting[0]._id,
+            userId : userId,
+            users : users
+        }
+
+        let token = localStorage.getItem("token");
+
+        let response = await deleteUsers('deleteUsers', obj, token);
+
+        if(response.response) {
+            liveChatting.pop();
+            setLiveChatting([...liveChatting]);
+            onClose();
+            setBoolean(!boolean);
+        }
     }
 
     return (
@@ -165,12 +231,12 @@ export default function ViewGroupChat({ isOpen, onClose }) {
                                     <Input placeholder='Chat Name' onChange={getChatName} />
                                     <Button colorScheme='green' onClick={updateGroupName}>Update</Button>
                                 </div>
-                                <Input placeholder='Add User to group' onChange={getValue}/>
+                                <Input placeholder='Add User to group' onChange={getValue} />
                             </div>
                         </center>
-                                <SearchUsers/>
+                        <SearchUsers handleChats={addGroupUsers} />
 
-                        <Button colorScheme='red' mt={"8"} mb={"2"} float={"right"} >Leave Group</Button>
+                        <Button colorScheme='red' mt={"8"} mb={"2"} float={"right"} onClick={handleLeavingGroup}>Leave Group</Button>
                     </AlertDialogBody>
                 </AlertDialogContent>
             </AlertDialog>

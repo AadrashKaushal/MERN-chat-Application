@@ -1,9 +1,9 @@
 import { Avatar } from '@chakra-ui/react'
 import { useUserProfile } from '../context/ChatContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ChatUsers() {
-    let { myChats, setLiveChatting, liveChatting ,setRenderRealTimeChat} = useUserProfile();
+    let { myChats, setLiveChatting, liveChatting ,setRenderRealTimeChat , setGroupChatChanger , groupChatChanger} = useUserProfile();
 
     let [divStyle, setDivStyle] = useState({
         bgColor: "bg-gray-200",
@@ -16,9 +16,10 @@ export default function ChatUsers() {
     const openChatBox = (val) => {
         liveChatting.splice(0, liveChatting.length);
         setLiveChatting([...liveChatting]);
+
         liveChatting.push(val);
         setLiveChatting([...liveChatting]);
-
+        setGroupChatChanger(!groupChatChanger);
     }
 
     return (
