@@ -17,7 +17,7 @@ import SearchUsers from './SearchUsers';
 
 export default function ViewGroupChat({ isOpen, onClose }) {
     let toast = useToast();
-    let { setSearchUser, userProfile, liveChatting, setLiveChatting, boolean, setBoolean , groupChatChanger} = useUserProfile();
+    let { setSearchUser, userProfile, liveChatting, setLiveChatting, boolean, setBoolean , groupChatChanger , setGroupChatName} = useUserProfile();
     let [viewGroupChat, setViewGroupChat] = useState([]);
     let [addedUsers, setAddedUsers] = useState(false);
     let [changeChatName, setChangeChatName] = useState("");
@@ -26,9 +26,11 @@ export default function ViewGroupChat({ isOpen, onClose }) {
 
 
     useEffect(() => {
+        setGroupChatName([...[]]);
         if (liveChatting.length > 0) {
             let token = localStorage.getItem("token");
             displayGroupChat('viewGroupChats', liveChatting[0], token).then((res) => {
+                setGroupChatName([...res.data]);
                 setViewGroupChat([...res.data]);
             }).catch((err) => {
                 console.log(err);

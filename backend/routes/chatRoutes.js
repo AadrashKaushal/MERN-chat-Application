@@ -22,6 +22,9 @@ router.put('/updateChatname',jwtVerification,chatsController.updateChatnameContr
 
 router.get('/myChats',jwtVerification,chatsController.getUserChatsController);
 
+// get solo chat Id
+router.get('getSoloChat',jwtVerification,chatsController.getSoloChatController);
+
 // store messages
 router.post('/sendMessages',jwtVerification,chatsController.sendMessageController);
 

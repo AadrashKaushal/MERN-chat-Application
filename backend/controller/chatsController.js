@@ -270,8 +270,11 @@ export const getAllMessageController = async(req,res) => {
         if(chatId == '') {
             let user = users.split(',');
             let chating = await chats.find({ users : {$all : user} , isGroupChat : false });
-            console.log(chating)
             getAllMessages = await messages.find({chat : chating[0]._id});
+
+            if(getAllMessages.length == 0) {
+                getAllMessages = chating;
+            }
 
         } else {
             getAllMessages = await messages.find({chat : chatId});
@@ -290,5 +293,34 @@ export const getAllMessageController = async(req,res) => {
             response: false,
             message : "Something went wrong !!"
         });
+    }
+}
+
+export const getSoloChatController = async(req,res) => {
+    try {
+
+        let {users} = req.query;
+
+        console.log(users);
+
+        let userArr = users.split(",");
+
+        console.log(userArr);
+
+        let chatData = await chats.find({ users : {$all : userArr} , isGroupChat : false });
+
+        res.json({
+            message : "Solo Chat get Successfully",
+            response : true,
+            data : chatData
+        })
+
+    } catch(err) {
+        console.log(err);
+
+        res.json({
+            message : "Something went wrong !!",
+            response : false
+        })
     }
 }

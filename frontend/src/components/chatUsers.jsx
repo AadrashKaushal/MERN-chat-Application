@@ -3,7 +3,7 @@ import { useUserProfile } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
 
 export default function ChatUsers() {
-    let { myChats, setLiveChatting, liveChatting ,setRenderRealTimeChat , setGroupChatChanger , groupChatChanger} = useUserProfile();
+    let { myChats, setLiveChatting, liveChatting ,setRenderRealTimeChat , setGroupChatChanger , groupChatChanger , setRefreshChats , refreshChats } = useUserProfile();
 
     let [divStyle, setDivStyle] = useState({
         bgColor: "bg-gray-200",
@@ -20,6 +20,7 @@ export default function ChatUsers() {
         liveChatting.push(val);
         setLiveChatting([...liveChatting]);
         setGroupChatChanger(!groupChatChanger);
+        setRefreshChats(!refreshChats);
     }
 
     return (
