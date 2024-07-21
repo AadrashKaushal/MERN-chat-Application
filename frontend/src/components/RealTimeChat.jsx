@@ -88,30 +88,11 @@ export default function RealTimeChat() {
             }
         })
 
+
         socket.on('new-message',({data}) => {
-            let token = localStorage.getItem("token");
-        if (!liveChatting[0].users) {
-            let user = [];
-            user.push(userProfile._id);
-            user.push(liveChatting[0]._id);
-
-            getAllMessage('getMessages', user, "", token).then((res) => {
-                setMessageData([...res.data]);
-                socket.emit("createRoom", { chatId: res.data[0].chat });
-            }).catch((err) => {
-                console.log(err);
-            })
-        } else {
-            let chatId = liveChatting[0]._id;
-            socket.emit("createRoom", { chatId: liveChatting[0]._id });
-            getAllMessage('getMessages', [], chatId, token).then((res) => {
-                setMessageData([...res.data]);
-            }).catch((err) => {
-                console.log(err);
-            })
-
-        }
-
+            setRefreshChats(!refreshChats);
+            messageData.push(data);
+            setMessageData([...messageData]);
         })
         
         
@@ -134,6 +115,7 @@ export default function RealTimeChat() {
 
         if (liveChatting[0].isGroupChat === true) {
             socket.emit("stop-typing", { chatId: liveChatting[0]._id, userId: userProfile._id });
+
         } else {
             socket.emit("stop-typing", { chatId: messageData[0].chat, userId: userProfile._id });
         }
@@ -147,7 +129,7 @@ export default function RealTimeChat() {
                     sendMessage.readBy.push(val);
                 }
             });
-
+            
             sendMessage.chat = liveChatting[0]._id
 
         } else {

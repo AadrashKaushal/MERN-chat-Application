@@ -7,11 +7,11 @@ import * as chatPageApis from '../../Api/chatPageApis.js'
 import { useUserProfile } from '../../context/ChatContext.jsx';
 import { useToast } from '@chakra-ui/react'
 import RealTimeChat from "../../components/RealTimeChat.jsx";
+import io from "socket.io-client";
 
 export default function Home() {
   const toast = useToast();
   let { setUserProfile, setMyChats, userProfile, boolean, liveChatting , renderRealTimeChat } = useUserProfile();
-
   let navigate = useNavigate();
 
   useEffect(() => {

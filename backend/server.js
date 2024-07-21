@@ -9,6 +9,7 @@ import {Server} from 'socket.io';
 
 
 import 'dotenv/config'
+import { join } from 'path';
 
 const App = express();
 const server = http.createServer(App);
@@ -45,6 +46,7 @@ server.listen(port,()=>{
 
 
 io.on('connection',(socket) => {
+    
     console.log("socket Connected");
     socket.on('createRoom',({chatId}) => {
         socket.join(`room-${chatId}`);
@@ -52,11 +54,11 @@ io.on('connection',(socket) => {
     })
 
     socket.on('typing',({userId , chatId}) => {
-        io.to(`room-${chatId}`).emit('sender-typing',{userId : userId });
+        io.to(`room-${chatId}`).emit('sender-typing',{chatId : chatId , userId : userId });
     })
 
     socket.on('stop-typing',({userId , chatId}) => {
-        io.to(`room-${chatId}`).emit('stop-typing',{userId : userId });
+        io.to(`room-${chatId}`).emit('stop-typing',{chatId : chatId , userId : userId });
     })
 
     socket.on("new-message",({chatId , data}) => {
@@ -64,6 +66,9 @@ io.on('connection',(socket) => {
         io.to(`room-${chatId}`).emit("new-message",{data : data});
     })
 
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
 })
 
 

@@ -278,6 +278,9 @@ export const getAllMessageController = async(req,res) => {
 
         } else {
             getAllMessages = await messages.find({chat : chatId});
+            if(getAllMessages.length == 0) {
+                getAllMessages = chating;
+            }
         }
         
         res.json({

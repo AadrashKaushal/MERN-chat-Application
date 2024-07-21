@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import { SearchIcon } from "@chakra-ui/icons"
-import { BellIcon } from "@chakra-ui/icons"
 import MyDrawer from './MyDrawer.jsx'
 import { Avatar } from '@chakra-ui/react'
 import React from 'react'
@@ -22,9 +21,8 @@ export default function Navbar() {
                     </Button>
                     <h1 className="text-2xl font-normal text-gray-600">Talk-A-Tive</h1>
                     <div className="flex space-x-4" >
-                        <BellIcon className="text-xl mt-2 " />
-                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size={"sm"}/>
-                        <MyProfile/>
+                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size={"sm"} />
+                        <MyProfile />
                     </div>
                     <MyDrawer isOpen={isOpen} onClose={onClose} />
                 </div>
